@@ -113,7 +113,7 @@ class BookInWishlist(models.Model):
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
     user = models.ForeignKey(WebsiteUser, on_delete=models.CASCADE)
-    items = models.ManytoManyField(
+    items = models.ManyToManyField(
         Book,
         related_name='carts',
         through='CartItem'

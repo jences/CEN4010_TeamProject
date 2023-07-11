@@ -109,6 +109,40 @@ class BookInWishlist(models.Model):
 
     def __str__(self):
         return str(self.book)
+    
+class Cart(models.Model):
+    #ref_code=models.CharField(max_length=15)
+    user = models.ForeignKey(WebsiteUser, on_delete=models.CASCADE)
+    items = models.ManytoManyField(
+        Book,
+        related_name='carts',
+        through='CartItem'
+    )
+
+    #is_ordered = models.BooleanField(default=False)
+
+    def get_cart_items(self):
+        return self.items.all()
+    
+    def get_cart_total(self):
+        return sum([item.product.price for item in self.items.all()])
+    
+    def __str__(self):
+        return '{0} - {1}'.format(self.owner, self.ref_code)
+    
+
+class CartItem(models.Model):
+    item = models.ForeignKey(Book, on_delete=models.CASCADE)
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    class Meta:
+        contraints = [
+            models.UniqueField(fields=['item', 'cart'], name='unique_item_cart')
+        ]    
+
+    def __str__(self):
+        return self.item.title
 
 class ShoppingCart(models.Model):
     user = models.OneToOneField(WebsiteUser, on_delete=models.CASCADE)

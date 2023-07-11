@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Author, Publisher, WebsiteUser
+from .models import Book, Author, Publisher, WebsiteUser, Cart, CartItem
 import locale
 from . import user_services
 
@@ -41,3 +41,12 @@ class WebsiteUserSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
         return user_services.UserDataClass(**data)
+
+class CartSerializer(serializers.ModelSerializer):
+    model = Cart
+    fields = ['items']
+
+class CartItemSerializer(serializers.ModelSerializer):
+    model = CartItem
+    fields = ['item, quantity, price']
+

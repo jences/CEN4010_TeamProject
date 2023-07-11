@@ -142,7 +142,7 @@ class CartItem(models.Model):
 
     class Meta:
         contraints = [
-            models.UniqueField(fields=['item', 'cart'], name='unique_item_cart')
+            models.UniqueConstraint(fields=['item', 'cart'], name='unique_item_cart')
         ]    
 
     def __str__(self):

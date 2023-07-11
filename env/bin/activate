@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/alvise/Desktop/teamproject/env"
+VIRTUAL_ENV="/Users/jennifer/Documents/GitHub/CEN4010_TeamProject/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

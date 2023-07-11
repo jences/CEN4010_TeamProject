@@ -1,4 +1,4 @@
-from bookstore_app.models import Book, Publisher, Author, User
+from bookstore_app.models import Book, Publisher, Author, WebsiteUser
 
 #script for importing dummy data into the database
 def populateDb():
@@ -63,7 +63,7 @@ def populateDb():
     )
 
     #adding users
-    user1 = User.objects.create(
+    user1 = WebsiteUser.objects.create(
         username = "testUser1",
         password = "password1",
         firstName = "test1",
@@ -71,7 +71,7 @@ def populateDb():
         email = "user1@example.com",
         address = "testAddress 1"
     )
-    user2 = User.objects.create(
+    user2 = WebsiteUser.objects.create(
         username = "testUser2",
         password = "password2",
         firstName = "test2",
@@ -79,7 +79,7 @@ def populateDb():
         email = "user2@example.com",
         address = "testAddress 2"
     )
-    user3 = User.objects.create(
+    user3 = WebsiteUser.objects.create(
         username = "testUser3",
         password = "password3",
         firstName = "test3",

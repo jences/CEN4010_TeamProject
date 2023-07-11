@@ -132,7 +132,7 @@ class Cart(models.Model):
     
 
 class CartItem(models.Model):
-    item_cart = models.ForeignKey(
+    cart = models.ForeignKey(
         Cart, 
         on_delete=models.CASCADE,
         related_name='cartitems',
@@ -142,7 +142,7 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         related_name="cartitems",
         )
-    item_quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=1)
 
     class Meta:
         constraints = [

@@ -112,7 +112,7 @@ class BookInWishlist(models.Model):
     
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
-    user = models.ForeignKey(WebsiteUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(WebsiteUser, on_delete=models.CASCADE, related_name='owner')
     items = models.ManyToManyField(
         Book,
         related_name='carts',
@@ -132,16 +132,20 @@ class Cart(models.Model):
     
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(
-        'Cart', 
+    item_cart = models.ForeignKey(
+        Cart, 
         on_delete=models.CASCADE,
-        related_name='items',
+        related_name='cartitems',
         )
-    item = models.ForeignKey(Book, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    item = models.ForeignKey(
+        Book, 
+        on_delete=models.CASCADE,
+        related_name="cartitems",
+        )
+    item_quantity = models.IntegerField(default=1)
 
     class Meta:
-        contraints = [
+        constraints = [
             models.UniqueConstraint(fields=['item', 'cart'], name='unique_item_cart')
         ]    
 

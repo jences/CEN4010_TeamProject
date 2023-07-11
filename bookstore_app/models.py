@@ -132,8 +132,12 @@ class Cart(models.Model):
     
 
 class CartItem(models.Model):
+    cart = models.ForeignKey(
+        'Cart', 
+        on_delete=models.CASCADE,
+        related_name='items',
+        )
     item = models.ForeignKey(Book, on_delete=models.CASCADE)
-    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
     class Meta:
@@ -144,6 +148,6 @@ class CartItem(models.Model):
     def __str__(self):
         return self.item.title
 
-class ShoppingCart(models.Model):
-    user = models.OneToOneField(WebsiteUser, on_delete=models.CASCADE)
-    books = models.ManyToManyField(Book)
+#class ShoppingCart(models.Model):
+#    user = models.OneToOneField(WebsiteUser, on_delete=models.CASCADE)
+#    books = models.ManyToManyField(Book)

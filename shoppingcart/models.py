@@ -8,13 +8,13 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=0)
     price_ht = models.FloatField(blank=True)
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.product.name
     
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     #is_ordered = models.BooleanField(default=False)
 
     def get_cart_items(self):

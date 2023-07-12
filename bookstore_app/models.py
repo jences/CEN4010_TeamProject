@@ -112,9 +112,11 @@ class BookInWishlist(models.Model):
     
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
-    owner = models.OneToOneField(
+    owner = models.ForeignKey(
         WebsiteUser,
         on_delete=models.CASCADE,
+        null=True,
+        related_name= '+',
     )
     
     items = models.ManyToManyField(
@@ -125,7 +127,7 @@ class Cart(models.Model):
 
     number_of_items = models.PositiveIntegerField(default=0)
     
-    subtotal = models.FloatField(
+    subtotal = models.DecimalField(
         default=0.00,
         max_digits=6,
         decimal_places=2,
@@ -148,6 +150,7 @@ class CartItem(models.Model):
         Cart, 
         on_delete=models.CASCADE,
         related_name='cartitems',
+        null=True,
         )
     item = models.ForeignKey(
         Book, 

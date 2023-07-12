@@ -120,7 +120,7 @@ class Cart(models.Model):
 
     items = models.ManyToManyField(
         Book,
-        #related_name='carts',
+        related_name='carts',
         through='CartItem',
     )
 
@@ -148,13 +148,13 @@ class CartItem(models.Model):
     item = models.ForeignKey(
         Book, 
         on_delete=models.CASCADE,
-        #related_name="cartitems",
+        related_name="cartitems",
     )
     
     cart = models.ForeignKey(
         Cart, 
         on_delete=models.CASCADE,
-        #related_name='cartitems',
+        related_name='cartitems',
         null=True,
     )
     

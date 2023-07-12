@@ -112,11 +112,23 @@ class BookInWishlist(models.Model):
     
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
-    user = models.ForeignKey(WebsiteUser, on_delete=models.CASCADE, related_name='owner')
+    owner = models.OneToOneField(
+        WebsiteUser,
+        on_delete=models.CASCADE,
+    )
+    
     items = models.ManyToManyField(
         Book,
         related_name='carts',
-        through='CartItem'
+        through='CartItem',
+    )
+
+    number_of_items = models.PositiveIntegerField(default=0)
+    
+    subtotal = models.FloatField(
+        default=0.00,
+        max_digits=6,
+        decimal_places=2,
     )
 
     #is_ordered = models.BooleanField(default=False)

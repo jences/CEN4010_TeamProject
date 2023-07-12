@@ -165,7 +165,7 @@ class CartItem(models.Model):
         ]    
 
     def __str__(self):
-        return self.item.title
+        return f"Title: {self.item.title} | Quantity: {self.quantity}"
 
 #class ShoppingCart(models.Model):
 #    user = models.OneToOneField(WebsiteUser, on_delete=models.CASCADE)

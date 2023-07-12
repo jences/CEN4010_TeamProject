@@ -42,11 +42,23 @@ class WebsiteUserSerializer(serializers.Serializer):
         data = super().to_internal_value(data)
         return user_services.UserDataClass(**data)
 
-class CartSerializer(serializers.ModelSerializer):
-    model = Cart
-    fields = ['items']
+class CartItemSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='cart.owner.username')
+    title = serializers.ReadOnlyField(source='item.title')
+    price = serializers.ReadOnlyField(source='item.price')
+    isbn = serializers.ReadOnlyField(source='item.isbn')
 
-class CartItemSerializer(serializers.ModelSerializer):
-    model = CartItem
-    fields = ['item, quantity']
+    class Meta:
+        model = CartItem
+        fields = ['owner', 'url', 'isbn', 'title', 'price', 'quantity']
+
+class CartSerializer(serializers.HyperlinkedModelSerializer):
+    cart_list = CartItemSerializer(Cart.items, many=True, read_only=True)
+
+    class Meta:
+        ordering = ['-id']
+        model = Cart
+        fields = ['owner', 'cart_list', 'number_of_items', 'subtotal']
+
+
 

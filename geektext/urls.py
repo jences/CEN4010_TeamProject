@@ -8,8 +8,8 @@ router.register(r'publishers', views.PublisherViewSet)
 router.register(r'authors', views.AuthorViewSet)
 router.register(r'book', views.BookViewSet)
 router.register(r'users', views.UserViewSet)
-router.register(r'carts', views.CartViewSet)
-router.register(r'items', views.CartItemViewSet)
+router.register(r'cart', views.CartViewSet)
+router.register(r'cart/items', views.CartItemViewSet)
 
 
 urlpatterns = [

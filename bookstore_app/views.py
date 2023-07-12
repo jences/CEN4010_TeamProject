@@ -150,9 +150,9 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 
-class CartOwnerID(views.APIView):
+class CartOwnerID(generics.ListAPIView):
     #@api_view(['GET', 'POST'])
-    serializer_class = CartSerializer
+    serializer_class = CartItemSerializer
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
@@ -174,7 +174,7 @@ class CartOwnerID(views.APIView):
             message = "There is no shopping cart found for the specified user."
             return Response({'message': message})
         
-        serializer = self.get_serializer(queryset)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
     
 #    def user_cart_list(request, id, format=None):

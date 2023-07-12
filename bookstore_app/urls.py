@@ -6,4 +6,6 @@ urlpatterns = [
     path('login/', views.LoginAPI.as_view(), name="login"),
     path('profile/', views.WebsiteUserAPI.as_view(), name='profile'),
     path('logout/', views.LogoutAPI.as_view(), name='logout'),
+    path('cart/<int:id>', views.CartOwnerID.as_view(), name='cart_items_by_user'),
+
 ]

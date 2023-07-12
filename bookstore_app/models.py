@@ -155,7 +155,6 @@ class CartItem(models.Model):
         Cart, 
         on_delete=models.CASCADE,
         related_name='cartitems',
-        null=True,
     )
     
     quantity = models.IntegerField(default=1)

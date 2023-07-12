@@ -20,5 +20,5 @@ urlpatterns = [
     path('books/<int:pk>/', views.BookDetail.as_view(), name='book-detail'),
     path('author/<int:author_id>/books/', views.BookAuthorID.as_view(), name='books_by_author'),
     path('bookstore/', include('bookstore_app.urls')),
-    path('cart/<int:id>', views.CartViews.as_view()),
+    path('cart/<int:id>', views.CartOwnerID.as_view(), name='cart_items_by_user'),
 ]

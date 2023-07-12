@@ -155,20 +155,26 @@ class CartOwnerID(views.APIView):
     serializer_class = CartSerializer
 
     def get_queryset(self):
-        user_profile = self.kwargs['owner']
+        user_id = self.kwargs['user_id']
+        try:
+            user_profile = WebsiteUser.objects.get(pk=user_id)
+        except WebsiteUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         user_cart = Cart.objects.filter(owner=user_profile)
-        user_items = CartItem.objects.filter(cart=user_cart)
+        #user_items = CartItem.objects.filter(cart=user_cart)
         #serializer = CartSerializer(user_items, many=True)
-        return user_items
+        #return user_items
+        return user_cart
 
-    def list(self, request, *kwargs):
+    def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
 
         if not queryset.exists():
             message = "There is no shopping cart found for the specified user."
             return Response({'message': message})
         
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset)
         return Response(serializer.data)
     
 #    def user_cart_list(request, id, format=None):

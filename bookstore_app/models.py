@@ -120,7 +120,7 @@ class Cart(models.Model):
 
     items = models.ManyToManyField(
         Book,
-        related_name='carts',
+        #related_name='carts',
         through='CartItem',
     )
 
@@ -145,17 +145,19 @@ class Cart(models.Model):
     
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(
-        Cart, 
-        on_delete=models.CASCADE,
-        related_name='cartitems',
-        null=True,
-        )
     item = models.ForeignKey(
         Book, 
         on_delete=models.CASCADE,
-        related_name="cartitems",
-        )
+        #related_name="cartitems",
+    )
+    
+    cart = models.ForeignKey(
+        Cart, 
+        on_delete=models.CASCADE,
+        #related_name='cartitems',
+        null=True,
+    )
+    
     quantity = models.IntegerField(default=1)
 
     class Meta:

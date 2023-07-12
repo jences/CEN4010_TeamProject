@@ -117,6 +117,7 @@ class Cart(models.Model):
         on_delete=models.CASCADE,
         null=True,
         related_name= '+',
+        primary_key=True,
     )
     
     items = models.ManyToManyField(

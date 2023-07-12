@@ -112,9 +112,11 @@ class BookInWishlist(models.Model):
     
 class Cart(models.Model):
     #ref_code=models.CharField(max_length=15)
-    owner = models.OneToOneField(
+    owner = models.ForeignKey(
         WebsiteUser,
         on_delete=models.CASCADE,
+        null=True,
+        related_name= '+',
         primary_key=True,
     )
     

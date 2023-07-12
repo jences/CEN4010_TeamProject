@@ -176,8 +176,31 @@ class CartOwnerID(generics.ListAPIView):
         
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-    
-#    def user_cart_list(request, id, format=None):
+
+class CartItemAPI(views.APIView):
+    def adjust_quantity(request, user_id, book_id, format=None):
+
+        try:
+            book = Book.objects.get(pk=book_id)
+        except Book.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            user = WebsiteUser.objects.get(pk=user_id)
+        except WebsiteUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'GET':
+            serializer = CartItemSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+            else:
+                return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#   
+# def user_cart_list(request, id, format=None):
 #
 #        try:
 #            user_profile = WebsiteUser.objects.get(pk=id)

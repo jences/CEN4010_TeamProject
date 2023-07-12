@@ -7,5 +7,8 @@ urlpatterns = [
     path('login/', views.LoginAPI.as_view(), name="login"),
     path('profile/', views.WebsiteUserAPI.as_view(), name='profile'),
     path('logout/', views.LogoutAPI.as_view(), name='logout'),
-    path('cart-items/', CartViews.as_view()),
+    path('cart/', CartViews.as_view()),
+#    path('item/add', views),
+#    path('cart/remove', views),
+
 ]

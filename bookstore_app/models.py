@@ -142,7 +142,7 @@ class Cart(models.Model):
         return sum([item.product.price for item in self.items.all()])
     
     def __str__(self):
-        return '{0} - {1}'.format(self.owner, self.ref_code)
+        return "{}".format(self.pk) if self.pk else "(unsaved)"
     
 
 class CartItem(models.Model):

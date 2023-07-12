@@ -8,6 +8,8 @@ router.register(r'publishers', views.PublisherViewSet)
 router.register(r'authors', views.AuthorViewSet)
 router.register(r'book', views.BookViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'carts', views.CartViewSet)
+router.register(r'items', views.CartItemViewSet)
 
 
 urlpatterns = [
@@ -18,4 +20,5 @@ urlpatterns = [
     path('books/<int:pk>/', views.BookDetail.as_view(), name='book-detail'),
     path('author/<int:author_id>/books/', views.BookAuthorID.as_view(), name='books_by_author'),
     path('bookstore/', include('bookstore_app.urls')),
+    path('cart/<int:id>', views.CartViews.as_view()),
 ]

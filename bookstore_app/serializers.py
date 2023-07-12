@@ -43,25 +43,14 @@ class WebsiteUserSerializer(serializers.Serializer):
         return user_services.UserDataClass(**data)
 
 class CartItemSerializer(serializers.HyperlinkedModelSerializer):
-#    owner = serializers.ReadOnlyField(source='cart.owner.username')
-#    title = serializers.ReadOnlyField(source='item.title')
-#    price = serializers.ReadOnlyField(source='item.price')
-#    isbn = serializers.ReadOnlyField(source='item.isbn')
-
     class Meta:
         model = CartItem
         fields = '__all__'
-#        fields = ['owner', 'url', 'isbn', 'title', 'price', 'quantity']
-
 
 class CartSerializer(serializers.HyperlinkedModelSerializer):
-#    cart_list = CartItemSerializer(Cart.items, many=True, read_only=True)
-
     class Meta:
-#        ordering = ['-id']
         model = Cart
         fields = '__all__'
-#        fields = ['owner', 'cart_list', 'number_of_items', 'subtotal']
 
 
 

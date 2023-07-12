@@ -6,6 +6,7 @@ from bookstore_app import serializers as user_serializers, user_services
 from bookstore_app import authentication
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -36,6 +37,14 @@ class WebsiteUserViewSet(viewsets.ModelViewSet):
     queryset = WebsiteUser.objects.all()
     serializer_class = WebsiteUserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class CartViewSet(viewsets.ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+class CartItemViewSet(viewsets.ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
 
 #API endpoint that creates a user profile
 class RegisterAPI(views.APIView):
@@ -141,22 +150,51 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 
-class CartViews(views.APIView):
-    
-    @api_view(['GET', 'POST'])
-    def cart_list(request, format=None):
-        if request.method == 'GET':
-            items = Cart.items.all()
-            serializer = CartSerializer(items, many=True)
-            return Response(serializer.data)
+class CartOwnerID(views.APIView):
+    #@api_view(['GET', 'POST'])
+    serializer_class = CartSerializer
+
+    def get_queryset(self):
+        user_profile = self.kwargs['owner']
+        user_cart = Cart.objects.filter(owner=user_profile)
+        user_items = CartItem.objects.filter(cart=user_cart)
+        #serializer = CartSerializer(user_items, many=True)
+        return user_items
+
+    def list(self, request, *kwargs):
+        queryset = self.get_queryset()
+
+        if not queryset.exists():
+            message = "There is no shopping cart found for the specified user."
+            return Response({'message': message})
         
-        if request.method == 'POST':
-            serializer = CartSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-            else:
-                return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+#    def user_cart_list(request, id, format=None):
+#
+#        try:
+#            user_profile = WebsiteUser.objects.get(pk=id)
+#        except WebsiteUser.DoesNotExist:
+#            return Response(status=status.HTTP_404_NOT_FOUND)
+#        
+#        if request.method == 'GET':
+#            user_cart = Cart.objects.filter(owner=user_profile, is_ordered=False)
+#            user_items = CartItem.objects.filter(cart=user_cart, is_ordered=False)
+#            serializer = CartSerializer(user_items, many=True)
+#            
+#            return Response(serializer.data)
+#            #if user_cart.exists():
+#                #cart_items = Cart.get_cart_items
+#                #return cart_items
+#                
+#        if request.method == 'POST':
+#            serializer = CartSerializer(data=request.data)
+#            if serializer.is_valid():
+#                serializer.save()
+#                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+#            else:
+#                return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     
 #    def post(self, request):

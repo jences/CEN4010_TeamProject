@@ -115,10 +115,9 @@ class Cart(models.Model):
     owner = models.ForeignKey(
         WebsiteUser,
         on_delete=models.CASCADE,
-        null=True,
         related_name= '+',
     )
-    
+
     items = models.ManyToManyField(
         Book,
         related_name='carts',

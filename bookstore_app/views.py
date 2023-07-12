@@ -1,10 +1,11 @@
-from bookstore_app.models import Book, Author, Publisher, WebsiteUser
+from bookstore_app.models import Book, Author, Publisher, WebsiteUser, Cart, CartItem
 from bookstore_app.serializers import BookSerializer, AuthorSerializer, PublisherSerializer, WebsiteUserSerializer, CartItemSerializer, CartSerializer
 from rest_framework.response import Response
 from rest_framework import views, response, exceptions, permissions, viewsets, status, generics
 from bookstore_app import serializers as user_serializers, user_services
 from bookstore_app import authentication
 from rest_framework.permissions import IsAdminUser
+from rest_framework.decorators import api_view
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -140,13 +141,30 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 
-class CartItemViews(views.APIView):
-    def post(self, request):
-        serializer = CartItemSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-        else:
-            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+class CartViews(views.APIView):
+    
+    @api_view(['GET', 'POST'])
+    def cart_list(request, format=None):
+        if request.method == 'GET':
+            items = Cart.items.all()
+            serializer = CartSerializer(items, many=True)
+            return Response(serializer.data)
+        
+        if request.method == 'POST':
+            serializer = CartSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+            else:
+                return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+#    def post(self, request):
+#        serializer = CartSerializer(data=request.data)
+#        if serializer.is_valid():
+#            serializer.save()
+#            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+#        else:
+#            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
                              

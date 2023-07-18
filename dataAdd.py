@@ -63,7 +63,7 @@ def populateDb():
     )
 
     #adding users
-    user1 = WebsiteUser.objects.create(
+    user1 = WebsiteUser.objects.create_user(
         username = "testUser1",
         password = "password1",
         firstName = "test1",
@@ -71,7 +71,7 @@ def populateDb():
         email = "user1@example.com",
         address = "testAddress 1"
     )
-    user2 = WebsiteUser.objects.create(
+    user2 = WebsiteUser.objects.create_user(
         username = "testUser2",
         password = "password2",
         firstName = "test2",
@@ -79,7 +79,7 @@ def populateDb():
         email = "user2@example.com",
         address = "testAddress 2"
     )
-    user3 = WebsiteUser.objects.create(
+    user3 = WebsiteUser.objects.create_user(
         username = "testUser3",
         password = "password3",
         firstName = "test3",

@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from bookstore_app.models import Book, Author, Publisher, WebsiteUser, ShoppingCart, CartItem
 from bookstore_app.serializers import BookSerializer, AuthorSerializer, PublisherSerializer, WebsiteUserSerializer,UpdateUserSerializer, ShoppingCartSerializer, CartItemSerializer
 from rest_framework.response import Response
@@ -77,6 +78,35 @@ class BookAuthor(generics.ListAPIView):
         books = Book.objects.filter(author__iexact=author)
         return books
 
+class BookListByGenreView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    queryset = Book.objects.all()
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        genre = unquote(self.kwargs['genre'])
+        return Book.objects.filter(genre=genre)
+
+class TopBooksListView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        return Book.objects.order_by('-copiesSold')[:10]
+
+class BookListByRatingView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    queryset = Book.objects.all()
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        rating = self.kwargs['rating']
+        return Book.objects.filter(bookRating__gte=rating).order_by('-bookRating')
+    
+class PublisherBooksListView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    context_object_name = 'books'
+    
 #API endpoint that lets users log into their account, if they have one   
 class LoginAPI(views.APIView):
     def post(self, request):
@@ -187,3 +217,5 @@ class CartOwnerID(generics.ListAPIView):
         
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    
